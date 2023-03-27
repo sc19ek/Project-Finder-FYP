@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\PFapp",
+    "\\PFapp\\templates",
     "\\ProjectFinder"
   ],
   "SelectedNode": "\\ProjectFinder\\urls.py",

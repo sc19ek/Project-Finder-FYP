@@ -22,4 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
     path('associate_login', associate_login, name="associate_login"),
-]
+    path('resourcer_login', resourcer_login, name="resourcer_login"),
+    path('user_signup', user_signup, name="user_signup"),
+    path('Logout', Logout, name="Logout")
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
