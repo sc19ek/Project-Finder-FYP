@@ -1,0 +1,47 @@
+{% load static %}
+
+{% block body %}
+
+{% include 'resourcer_navigation.html'%}
+<style>
+    try {
+        text-align: center
+    }
+</style>
+
+<hr>
+<div class="container">
+    <table class="table table-hover container">
+        <thead>
+            <tr style="background-color : orange ; color : white">
+                <th>Role No.</th>
+                <th>Project Title</th>
+                <th>Role Title</th>
+                <th>Grade</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Creation Date</th>
+
+                <th>Apply</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in roles %}
+            <tr style="background-color : white">
+                <td>{{forloop.counter}}</td>
+                <td>{{i.projectTitle}}</td>
+                <td>{{i.roleTitle}}</td>
+                <td>{{i.grade}}</td>
+                <td>{{i.startDate}}</td>
+                <td>{{i.endDate}}</td>
+                <td>{{i.creationDate}}</td>
+
+                <td><a href="{% url 'index' %}" class="btn btn-success btn-sm">Apply</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

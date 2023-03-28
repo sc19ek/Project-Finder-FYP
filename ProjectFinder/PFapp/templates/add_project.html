@@ -1,0 +1,69 @@
+{% load static %}
+
+{% block body %}
+
+{% include 'resourcer_navigation.html' %}
+
+
+<form class="container mt-5" onsubmit="return checkpass();" name="signup" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Project Title</label>
+            <input type="text" class="form-control" name="projectTitle" placeholder="Enter the title of the project" required />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Role Title</label>
+            <input type="text" class="form-control" name="roleTitle" placeholder="Enter the title of the role" required />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Location</label>
+            <input type="text" class="form-control" name="location" placeholder="Enter the title of the role" required />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Grade</label>
+            <input type="text" class="form-control" name="grade" placeholder="Enter the grade required" required />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Start Date</label>
+            <input type="date" class="form-control" name="startDate" placeholder="Enter the start date" required />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>End Date</label>
+            <input type="date" class="form-control" name="endDate" placeholder="Enter the end date" required />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label>Description</label>
+            <textarea type="text" class="form-control" name="description" required></textarea>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label>Skills Required</label>
+            <input type="text" class="form-control" name="skills" placeholder="Salesforce, Microsoft Suite, Excel, etc." required />
+        </div>
+    </div>
+    <input type="submit" value="Add Role" class="btn btn-primary" style="margin-top:2%;color:white;background-color:darkorange;height:40px;font-size:15px" "   />
+</form>
+{% include 'footer.html' %}
+
+{% if error == "no" %}
+<script>
+    alert("Project Role was added successfully!");
+    window.location = ("{% url 'roles_listed' %}")
+</script>
+{% elif error == "yes" %}
+<script>
+    alert("Something went wrong try again!");
+</script>
+{% endif %}
+
+{% endblock %}

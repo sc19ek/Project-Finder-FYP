@@ -7,6 +7,9 @@ class EmployeeUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=200)
     grade = models.CharField(max_length=100)
+    los = models.CharField(max_length=100)
+    skills = models.CharField(max_length=300)
+    languages = models.CharField(max_length=300)
     def __str__(self) -> str:
         return self.user.username
 
