@@ -9,7 +9,7 @@ class EmployeeUser(models.Model):
     grade = models.CharField(max_length=100)
     los = models.CharField(max_length=100)
     skills = models.CharField(max_length=300)
-    languages = models.CharField(max_length=300)
+    languages = models.CharField(max_length=300, default='English')
     def __str__(self) -> str:
         return self.user.username
 
@@ -18,6 +18,7 @@ class ProjectRole(models.Model):
     requester = models.ForeignKey(EmployeeUser, on_delete=models.CASCADE)
     projectTitle = models.CharField(max_length=100)
     roleTitle = models.CharField(max_length=100)
+    los = models.CharField(max_length=100)
     grade = models.CharField(max_length=100)
     startDate = models.DateField()
     endDate = models.DateField()
@@ -26,4 +27,4 @@ class ProjectRole(models.Model):
     baseOffice = models.CharField(max_length=200)
     creationDate = models.DateField()
     def __str__(self) -> str:
-        return self.projectTitlee
+        return self.projectTitle

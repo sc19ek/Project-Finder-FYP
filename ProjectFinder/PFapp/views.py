@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_protect
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from datetime import date
 
 # Create your views here.
 
@@ -94,6 +95,7 @@ def add_project(request):
     if request.method=="POST":
         pTitle = request.POST['projectTitle']
         rTitle = request.POST['roleTitle']
+        los = request.POST['los']
         loc = request.POST['location']
         grd = request.POST['grade']
         sDate = request.POST['startDate']
@@ -103,12 +105,13 @@ def add_project(request):
         currentUser = request.user
         requester = EmployeeUser.objects.get(user=currentUser)
         try:
-            ProjectRole.objects.create(requester=requester, projectTitle=pTitle, roleTitle=rTitle, grade=grd, startDate=sDate, 
-                                              endDate=eDate, description=desc, skills=skills, baseOffice=loc, creationDate=date.today())
-            error = "no"
+            ProjectRole.objects.create(requester=requester, projectTitle=pTitle, roleTitle=rTitle, los=los, grade=grd, startDate=sDate, 
+                                   endDate=eDate, description=desc, skills=skills, baseOffice=loc, creationDate=date.today())
+            error="no"
         except:
-            error = "yes"
-    d = {'error': error}
+            error="yes"
+
+    d = {'error':error}
     return render(request, "add_project.html", d)
 
 def roles_listed(request):
@@ -125,7 +128,7 @@ def available_projects(request):
         return redirect('index')
     user = request.user
     employee = EmployeeUser.objects.get(user=user)
-    roles = ProjectRole.objects.filter(grade=employee.grade)
+    roles = ProjectRole.objects.filter(grade=employee.grade, los=employee.los)
     d = {'roles':roles}
     return render(request, "available_projects.html", d)
 
