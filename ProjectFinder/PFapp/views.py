@@ -56,6 +56,16 @@ def resourcer_login(request):
     d = {'error':error}
     return render(request, "resourcer_login.html", d)
 
+def associate_home(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    return render(request, "associate_home.html")
+
+def resourcer_home(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    return render(request, "resourcer_home.html")
+
 def Logout(request):
     logout(request)
     return redirect("index")
