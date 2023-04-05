@@ -21,11 +21,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
-    path('associate_login', associate_login, name="associate_login"),
-    path('resourcer_login', resourcer_login, name="resourcer_login"),
+    path('loginFunc', loginFunc, name="loginFunc"),
     path('user_signup', user_signup, name="user_signup"),
     path('associate_home', associate_home, name="associate_home"),
     path('resourcer_home', resourcer_home, name="resourcer_home"),
+    path('manager_home', manager_home, name="manager_home"),
     path('add_project', add_project, name="add_project"),
     path('roles_listed', roles_listed, name="roles_listed"),
     path('available_projects', available_projects, name="available_projects"),

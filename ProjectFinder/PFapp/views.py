@@ -23,65 +23,53 @@ def user_signup(request):
         languages = request.POST['languages']
         pwd = request.POST['password']
         try:
-            user = User.objects.create_user(first_name=first, last_name=last, username=email, password=pwd)
-            EmployeeUser.objects.create(user=user, location=location, grade=grade, los=los, skills=skills, languages=languages)
+            user_obj = User.objects.create_user(first_name=first, last_name=last, username=email, password=pwd)
+            EmployeeUser.objects.create(user=user_obj, location=location, grade=grade, los=los, skills=skills, languages=languages)
             error = "no"
         except:
             error = "yes"
     d = {'error': error}
     return render(request, "user_signup.html",d)
 
-def associate_login(request):
+def loginFunc(request):
     error=""
+    grd=""
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
-        user = authenticate(username=email, password=password)
-        if user:
-            print(user)
-            try:
-                user1 = EmployeeUser.objects.get(user=user)
-                print(user1)
-                if user1.grade == "Associate":
-                    print(user1)
-                    login(request,user)
-                    error="no"
-                else:
-                    error="yes"
-            except:
+        user_obj = authenticate(username=email, password=password)
+        print(user_obj)
+        if user_obj:
+            user1 = EmployeeUser.objects.get(user=user_obj)
+            print(user1)
+            login(request,user_obj)
+            if user1.grade in ["Associate", "Senior Associate", "Trainee"]:
+                error="no"
+                grd="employee"
+            elif user1.grade in ["Manager", "Senior Manager"]:
+                error="no"
+                grd="manager"
+            elif user1.grade in ["Director", "Partner", "Resourcer"]:
+                error="no"
+                grd="requester"
+            else:
                 error="yes"
         else:
             error="yes"
-    d = {'error':error}
-    return render(request, "associate_login.html", d)
-
-def resourcer_login(request):
-    error=""
-    if request.method == "POST":
-        email = request.POST['email']
-        password = request.POST['password']
-        user = authenticate(username=email, password=password)
-        if user:
-            try:
-                user1 = EmployeeUser.objects.get(user=user)
-                print(user1)
-                if user1.grade == "Resourcer":
-                    login(request,user)
-                    error="no"
-                else:
-                    error="yes"
-            except:
-                error="yes"
-        else:
-            error="yes"
-    print(error)
-    d = {'error':error}
-    return render(request, "resourcer_login.html", d)
+    d = {'error':error,
+         'grd':grd}
+    print(d)
+    return render(request, "loginFunc.html", d)
 
 def associate_home(request):
     if not request.user.is_authenticated:
         return redirect('index')
     return render(request, "associate_home.html")
+
+def manager_home(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    return render(request, "manager_home.html")
 
 def resourcer_home(request):
     if not request.user.is_authenticated:
@@ -90,8 +78,15 @@ def resourcer_home(request):
 
 def add_project(request):
     if not request.user.is_authenticated:
-        return redirect('resourcer_login')
+        return redirect('loginFunc')
     error = ""
+    currentUser = request.user
+    requester = EmployeeUser.objects.get(user=currentUser)
+    grd = requester.grade
+    if grd in ["Manager" , "Senior Manager"]:
+        userGrade = "manager"
+    else:
+        userGrade = "resourcer"
     if request.method=="POST":
         pTitle = request.POST['projectTitle']
         rTitle = request.POST['roleTitle']
@@ -102,8 +97,6 @@ def add_project(request):
         eDate = request.POST['endDate']
         desc = request.POST['description']
         skills = request.POST['skills']
-        currentUser = request.user
-        requester = EmployeeUser.objects.get(user=currentUser)
         try:
             ProjectRole.objects.create(requester=requester, projectTitle=pTitle, roleTitle=rTitle, los=los, grade=grd, startDate=sDate, 
                                    endDate=eDate, description=desc, skills=skills, baseOffice=loc, creationDate=date.today())
@@ -111,25 +104,39 @@ def add_project(request):
         except:
             error="yes"
 
-    d = {'error':error}
+    d = {'error':error,
+         'userGrade': userGrade}
     return render(request, "add_project.html", d)
 
 def roles_listed(request):
     if not request.user.is_authenticated:
-        return redirect('resourcer_login')
+        return redirect('loginFunc')
+    userGrade=""
     user = request.user
-    resourcer = EmployeeUser.objects.get(user=user)
-    roles = ProjectRole.objects.filter(requester=resourcer)
-    d = {'roles':roles}
+    userLoggedIn = EmployeeUser.objects.get(user=user)
+    grd = userLoggedIn.grade
+    if grd in ["Manager" , "Senior Manager"]:
+        userGrade = "manager"
+    else:
+        userGrade = "resourcer"
+    roles = ProjectRole.objects.filter(requester=userLoggedIn)
+    d = {'roles':roles,
+         'userGrade': userGrade}
     return render(request, "roles_listed.html", d)
 
 def available_projects(request):
     if not request.user.is_authenticated:
-        return redirect('index')
+        return redirect('loginFunc')
     user = request.user
     employee = EmployeeUser.objects.get(user=user)
-    roles = ProjectRole.objects.filter(grade=employee.grade, los=employee.los)
-    d = {'roles':roles}
+    grd = employee.grade
+    if grd in ["Manager", "Senior Manager"]:
+        userGrade = "manager"
+    else:
+        userGrade="employ"
+    roles = ProjectRole.objects.filter(grade=employee.grade)
+    d = {'roles':roles,
+         'userGrade':userGrade}
     return render(request, "available_projects.html", d)
 
 def Logout(request):

@@ -2,7 +2,11 @@
 
 {% block body %}
 
+{% if userGrade == "manager"%}
+{% include 'manager_navigation.html'%}
+{% elif userGrade == "resourcer" %}
 {% include 'resourcer_navigation.html' %}
+{% endif %}
 
 
 <form class="container mt-5" onsubmit="return checkpass();" name="signup" method="post" enctype="multipart/form-data">
@@ -57,7 +61,7 @@
             <input type="text" class="form-control" name="skills" placeholder="Salesforce, Microsoft Suite, Excel, etc." required />
         </div>
     </div>
-    <input type="submit" value="Add Role" class="btn btn-primary" style="margin-top:2%;color:white;background-color:darkorange;height:40px;font-size:15px" "    />
+    <input type="submit" value="Add Role" class="btn btn-primary" style="margin-top:2%;color:white;background-color:darkorange;height:40px;font-size:15px" "     />
 </form>
 {% include 'footer.html' %}
 

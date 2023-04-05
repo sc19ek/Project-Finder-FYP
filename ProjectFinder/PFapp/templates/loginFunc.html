@@ -17,14 +17,26 @@
 {% include 'footer.html' %}
 
 {% if error == "no" %}
+{% if grd == "employee" %}
+<script>
+    alert("Login was successfull!");
+    window.location = ("{% url 'associate_home' %}")
+</script>
+{% elif grd == "requester" %}
 <script>
     alert("Login was successfull!");
     window.location = ("{% url 'resourcer_home' %}")
+</script>
+{% elif grd == "manager" %}
+<script>
+    alert("Login was successfull!");
+    window.location = ("{% url 'manager_home' %}")
 </script>
 {% elif error == "yes" %}
 <script>
     alert("Invalid Login Credentials, Try again!");
 </script>
+{% endif %}
 {% endif %}
 
 {% endblock %}

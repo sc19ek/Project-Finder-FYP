@@ -41,8 +41,17 @@
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label>Grade</label>
-            <input type="text" class="form-control" name="grade" placeholder="Enter your grade" required />
+            <label for="grade">Grade</label>
+            <select name="grade" id="grade">
+                <option value="Trainee">Trainee</option>
+                <option value="Associate">Associate</option>
+                <option value="Senior Associate">Senior Associate</option>
+                <option value="Manager">Manager</option>
+                <option value="Senior Manager">Senior Manager</option>
+                <option value="Director">Director</option>
+                <option value="Partner">Partner</option>
+                <option value="Resourcer">Resourcer</option>
+            </select>
         </div>
     </div>
     <div class="form-row">
@@ -80,7 +89,7 @@
 {% if error == "no" %}
 <script>
     alert("Registration was successfull!");
-    window.location = ("{% url 'associate_login' %}")
+    window.location = ("{% url 'loginFunc' %}")
 </script>
 {% elif error == "yes" %}
 <script>

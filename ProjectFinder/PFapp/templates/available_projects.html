@@ -1,8 +1,11 @@
 {% load static %}
 
 {% block body %}
-
-{% include 'user_navigation.html'%}
+{% if userGrade == "manager"%}
+{% include 'manager_navigation.html'%}
+{% elif userGrade == "employee" %}
+{% include 'user_navigation.html' %}
+{% endif %}
 <style>
     try {
         text-align: center

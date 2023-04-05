@@ -2,7 +2,12 @@
 
 {% block body %}
 
-{% include 'resourcer_navigation.html'%}
+{% if userGrade == "manager"%}
+{% include 'manager_navigation.html'%}
+{% elif userGrade == "resourcer" %}
+{% include 'resourcer_navigation.html' %}
+{% endif %}
+
 <style>
     try {
         text-align: center
