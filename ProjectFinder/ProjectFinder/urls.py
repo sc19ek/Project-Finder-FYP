@@ -29,5 +29,6 @@ urlpatterns = [
     path('add_project', add_project, name="add_project"),
     path('roles_listed', roles_listed, name="roles_listed"),
     path('available_projects', available_projects, name="available_projects"),
+    path('role_desc/<int:pid>', role_desc, name="role_desc"),
     path('Logout', Logout, name="Logout")
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

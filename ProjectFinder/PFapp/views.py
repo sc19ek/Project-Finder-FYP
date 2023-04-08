@@ -133,11 +133,25 @@ def available_projects(request):
     if grd in ["Manager", "Senior Manager"]:
         userGrade = "manager"
     else:
-        userGrade="employ"
+        userGrade="employee"
     roles = ProjectRole.objects.filter(grade=employee.grade)
     d = {'roles':roles,
          'userGrade':userGrade}
     return render(request, "available_projects.html", d)
+
+def role_desc(request, pid):
+    pRole = ProjectRole.objects.get(id=pid)
+    user = request.user
+    employee = EmployeeUser.objects.get(user=user)
+    grd = employee.grade
+    if grd in ["Manager", "Senior Manager"]:
+        userGrade = "manager"
+    else:
+        userGrade="employee"
+    d = {'pRole':pRole,
+         'userGrade':userGrade}
+    return render(request, 'role_desc.html', d)
+
 
 def Logout(request):
     logout(request)

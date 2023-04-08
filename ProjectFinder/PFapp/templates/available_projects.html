@@ -1,11 +1,14 @@
 {% load static %}
 
 {% block body %}
+
 {% if userGrade == "manager"%}
 {% include 'manager_navigation.html'%}
 {% elif userGrade == "employee" %}
 {% include 'user_navigation.html' %}
+
 {% endif %}
+
 <style>
     try {
         text-align: center
@@ -39,7 +42,7 @@
                 <td>{{i.endDate}}</td>
                 <td>{{i.creationDate}}</td>
 
-                <td><a href="{% url 'index' %}" class="btn btn-success btn-sm">Apply</a></td>
+                <td><a href="{% url 'role_desc' i.id %}" class="btn btn-success btn-sm">Apply</a></td>
             </tr>
             {% endfor %}
         </tbody>

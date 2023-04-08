@@ -28,3 +28,11 @@ class ProjectRole(models.Model):
     creationDate = models.DateField()
     def __str__(self) -> str:
         return self.projectTitle
+
+
+class Applications(models.Model):
+    role = models.ForeignKey(ProjectRole, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(EmployeeUser, on_delete=models.CASCADE)
+    applicationDate = models.DateField()
+    def __str__(self) -> str:
+        return self.id

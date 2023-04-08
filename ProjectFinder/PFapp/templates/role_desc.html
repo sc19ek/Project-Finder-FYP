@@ -1,0 +1,47 @@
+{% load static %}
+
+{% block body %}
+
+{% if userGrade == "manager"%}
+{% include 'manager_navigation.html'%}
+{% elif userGrade == "employee" %}
+{% include 'user_navigation.html' %}
+
+{% endif %}
+
+
+<style>
+    try {
+        text-align: center
+    }
+</style>
+
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{pRole.projectTitle}}</h1>
+            <h2>{{pRole.roleTitle}}</h2>
+            <h5>Requester:</h5>
+            <p>{{pRole.requester.user.first_name}} {{pRole.requester.user.last_name}}</p>
+            <h5>Line of Service:</h5>
+            <p>{{pRole.los}}</p>
+            <h5>Grade Required:</h5>
+            <p>{{pRole.grade}}</p>
+            <h5>Duration:</h5>
+            <p>{{pRole.startDate}} - {{pRole.endDate}}</p>
+            <h5>Role Description:</h5>
+            <p>{{pRole.description}}</p>
+            <h5>Skills Required:</h5>
+            <p>{{pRole.skills}}</p>
+            <h5>Base Office:</h5>
+            <p>{{pRole.baseOffice}}</p>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-danger">Apply for this role</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

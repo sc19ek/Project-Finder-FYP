@@ -5,6 +5,6 @@
     "\\PFapp\\templates",
     "\\ProjectFinder"
   ],
-  "SelectedNode": "\\PFapp\\views.py",
+  "SelectedNode": "\\PFapp\\templates\\available_projects.html",
   "PreviewInSolutionExplorer": false
 }
