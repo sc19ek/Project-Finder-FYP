@@ -27,7 +27,7 @@ class ProjectRole(models.Model):
     baseOffice = models.CharField(max_length=200)
     creationDate = models.DateField()
     def __str__(self) -> str:
-        return self.projectTitle
+        return self.projectTitle + " " + self.roleTitle + " " + self.los + " " + self.grade
 
 
 class Applications(models.Model):
@@ -35,4 +35,5 @@ class Applications(models.Model):
     applicant = models.ForeignKey(EmployeeUser, on_delete=models.CASCADE)
     applicationDate = models.DateField()
     def __str__(self) -> str:
-        return self.id
+        return str(self.role) + " " + str(self.applicant)
+    

@@ -3,3 +3,5 @@ from .models import *
 
 admin.site.register(EmployeeUser)
 admin.site.register(ProjectRole)
+admin.site.register(Applications)
+

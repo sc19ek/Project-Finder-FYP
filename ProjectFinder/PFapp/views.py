@@ -140,6 +140,7 @@ def available_projects(request):
     return render(request, "available_projects.html", d)
 
 def role_desc(request, pid):
+    error=""
     pRole = ProjectRole.objects.get(id=pid)
     user = request.user
     employee = EmployeeUser.objects.get(user=user)
@@ -148,8 +149,16 @@ def role_desc(request, pid):
         userGrade = "manager"
     else:
         userGrade="employee"
+
+    if request.method=="POST":
+        try:
+            Applications.objects.create(role=pRole, applicant=employee, applicationDate=date.today())
+            error="no"
+        except:
+            error="yes"
     d = {'pRole':pRole,
-         'userGrade':userGrade}
+         'userGrade':userGrade,
+         'error':error}
     return render(request, 'role_desc.html', d)
 
 

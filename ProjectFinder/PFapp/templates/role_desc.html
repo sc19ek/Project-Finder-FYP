@@ -36,12 +36,25 @@
             <p>{{pRole.skills}}</p>
             <h5>Base Office:</h5>
             <p>{{pRole.baseOffice}}</p>
-            <div class="mt-4">
-                <button type="submit" class="btn btn-danger">Apply for this role</button>
-            </div>
+            <form class="container mt-5" onsubmit="return checkpass();" name="signup" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="submit" value="Add Role" class="btn btn-primary" style="margin-top:2%;color:white;background-color:darkorange;height:40px;font-size:15px" />
+            </form>
         </div>
     </div>
 </div>
 
+{% include 'footer.html' %}
+
+{% if error == "no" %}
+<script>
+    alert("Applied successfully!");
+    window.location = ("{% url 'available_roles' %}")
+</script>
+{% elif error == "yes" %}
+<script>
+    alert("Something went wrong try again!");
+</script>
+{% endif %}
 
 {% endblock %}
