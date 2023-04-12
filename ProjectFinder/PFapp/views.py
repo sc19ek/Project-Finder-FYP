@@ -124,6 +124,25 @@ def roles_listed(request):
          'userGrade': userGrade}
     return render(request, "roles_listed.html", d)
 
+def applicants(request, pid):
+    if not request.user.is_authenticated:
+        return redirect('loginFunc')
+    userGrade=""
+    user = request.user
+    userLoggedIn = EmployeeUser.objects.get(user=user)
+    grd = userLoggedIn.grade
+
+    pRole = ProjectRole.objects.get(id=pid)
+    if grd in ["Manager" , "Senior Manager"]:
+        userGrade = "manager"
+    else:
+        userGrade = "resourcer"
+    applicants = Applications.objects.filter(role=pRole)
+    d = {'role':pRole,
+         'userGrade': userGrade,
+         'applicants': applicants}
+    return render(request, "applicants.html", d)
+
 def available_projects(request):
     if not request.user.is_authenticated:
         return redirect('loginFunc')
@@ -161,6 +180,21 @@ def role_desc(request, pid):
          'error':error}
     return render(request, 'role_desc.html', d)
 
+def user_profile(request, uid):
+    user = request.user
+    employee = EmployeeUser.objects.get(user=user)
+    grd = employee.grade
+    if grd in ["Manager", "Senior Manager"]:
+        userGrade = "manager"
+    else:
+        userGrade="resourcer"
+
+    application = Applications.objects.get(id=uid)
+    userSelected = EmployeeUser.objects.get(id=application.applicant_id)
+    d = {'userSelected':userSelected,
+         'userGrade':userGrade
+         }
+    return render(request, 'user_profile.html', d)
 
 def Logout(request):
     logout(request)

@@ -1,0 +1,44 @@
+{% load static %}
+
+{% block body %}
+
+
+{% if userGrade == "manager"%}
+{% include 'manager_navigation.html'%}
+{% elif userGrade == "resourcer" %}
+{% include 'resourcer_navigation.html' %}
+
+{% endif %}
+
+
+<style>
+    try {
+        text-align: center
+    }
+</style>
+
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{userSelected.user.first_name}} {{userSelected.user.last_name}}</h1>
+
+            <h5>Line of Service:</h5>
+            <p>{{userSelected.los}}</p>
+            <h5>Grade:</h5>
+            <p>{{userSelected.grade}}</p>
+            <h5>Skills:</h5>
+            <p>{{userSelected.skills}}</p>
+            <h5>Skills Required:</h5>
+            <p>{{userSelected.languages}}</p>
+            <h5>Base Office:</h5>
+            <p>{{userSelected.location}}</p>
+
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+
+{% endblock %}

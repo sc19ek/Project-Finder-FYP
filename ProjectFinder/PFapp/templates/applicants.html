@@ -1,0 +1,50 @@
+{% load static %}
+
+{% block body %}
+
+{% if userGrade == "manager"%}
+{% include 'manager_navigation.html'%}
+{% elif userGrade == "resourcer" %}
+{% include 'resourcer_navigation.html' %}
+{% endif %}
+
+<style>
+    try {
+        text-align: center
+    }
+</style>
+
+<hr>
+<div class="container">
+    <table class="table table-hover container">
+        <thead>
+            <tr style="background-color : orange ; color : white">
+                <th>Applicant No.</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Grade</th>
+                <th>Line of Service</th>
+                <th>PwC Email</th>
+
+                <th>View More Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in applicants %}
+            <tr style="background-color : white">
+                <td>{{forloop.counter}}</td>
+                <td>{{i.applicant.user.first_name}}</td>
+                <td>{{i.applicant.user.last_name}}</td>
+                <td>{{i.applicant.grade}}</td>
+                <td>{{i.applicant.los}}</td>
+                <td>{{i.applicant.user.username}}</td>
+
+                <td><a href="{% url 'user_profile' i.id %}" class="btn btn-success btn-sm">More Details</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

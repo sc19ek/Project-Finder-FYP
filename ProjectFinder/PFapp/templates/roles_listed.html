@@ -45,7 +45,7 @@
                 <td>{{i.creationDate}}</td>
 
                 <td><a href="{% url 'index' %}" class="btn btn-success btn-sm">Edit</a></td>
-                <td><a href="{% url 'index' %}" class="btn btn-success btn-sm">View Applicants</a></td>
+                <td><a href="{% url 'applicants' i.id %}" class="btn btn-success btn-sm">View Applicants</a></td>
 
             </tr>
             {% endfor %}

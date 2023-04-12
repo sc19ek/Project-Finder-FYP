@@ -28,7 +28,7 @@
                 <th>End Date</th>
                 <th>Creation Date</th>
 
-                <th>Apply</th>
+                <th>More Details</th>
             </tr>
         </thead>
         <tbody>
@@ -42,7 +42,7 @@
                 <td>{{i.endDate}}</td>
                 <td>{{i.creationDate}}</td>
 
-                <td><a href="{% url 'role_desc' i.id %}" class="btn btn-success btn-sm">Apply</a></td>
+                <td><a href="{% url 'role_desc' i.id %}" class="btn btn-success btn-sm">More Details</a></td>
             </tr>
             {% endfor %}
         </tbody>
