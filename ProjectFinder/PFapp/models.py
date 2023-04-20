@@ -34,6 +34,7 @@ class Applications(models.Model):
     role = models.ForeignKey(ProjectRole, on_delete=models.CASCADE)
     applicant = models.ForeignKey(EmployeeUser, on_delete=models.CASCADE)
     applicationDate = models.DateField()
+    matchRating= models.IntegerField(default=0)
     def __str__(self) -> str:
         return str(self.role) + " " + str(self.applicant)
     

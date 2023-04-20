@@ -12,6 +12,7 @@ def index(request):
 
 def user_signup(request):
     error = ""
+    grd = ""
     if request.method=="POST":
         first = request.POST['firstName']
         last = request.POST['lastName']
@@ -26,9 +27,21 @@ def user_signup(request):
             user_obj = User.objects.create_user(first_name=first, last_name=last, username=email, password=pwd)
             EmployeeUser.objects.create(user=user_obj, location=location, grade=grade, los=los, skills=skills, languages=languages)
             error = "no"
+            user_obj=authenticate(username=email, password=pwd)
+            login(request,user_obj)
+            if grade in ["Associate", "Senior Associate", "Trainee"]:
+                grd = "employee"
+                redirect('associate_home')
+            elif grade in ["Manager", "Senior Manager"]:
+                grd="manager"
+                redirect('manager_home')
+            elif grade in ["Director", "Partner", "Resourcer"]:
+                grd="resourcer"
+                redirect('resourcer_home')
         except:
             error = "yes"
-    d = {'error': error}
+    d = {'error': error,
+         'grd': grd}
     return render(request, "user_signup.html",d)
 
 def loginFunc(request):
@@ -38,10 +51,8 @@ def loginFunc(request):
         email = request.POST['email']
         password = request.POST['password']
         user_obj = authenticate(username=email, password=password)
-        print(user_obj)
         if user_obj:
             user1 = EmployeeUser.objects.get(user=user_obj)
-            print(user1)
             login(request,user_obj)
             if user1.grade in ["Associate", "Senior Associate", "Trainee"]:
                 error="no"
@@ -164,6 +175,9 @@ def role_desc(request, pid):
     user = request.user
     employee = EmployeeUser.objects.get(user=user)
     grd = employee.grade
+    roleSkills = list(pRole.skills.split(","))
+    userSkills = list(employee.skills.split(","))
+    matchRating = (len(set(roleSkills).intersection(set(userSkills))))/len(roleSkills)*100
     if grd in ["Manager", "Senior Manager"]:
         userGrade = "manager"
     else:
@@ -171,13 +185,14 @@ def role_desc(request, pid):
 
     if request.method=="POST":
         try:
-            Applications.objects.create(role=pRole, applicant=employee, applicationDate=date.today())
+            Applications.objects.create(role=pRole, applicant=employee, applicationDate=date.today(), matchRating=matchRating)
             error="no"
         except:
             error="yes"
     d = {'pRole':pRole,
          'userGrade':userGrade,
-         'error':error}
+         'error':error,
+         'matchRating': matchRating}
     return render(request, 'role_desc.html', d)
 
 def user_profile(request, uid):
@@ -191,8 +206,10 @@ def user_profile(request, uid):
 
     application = Applications.objects.get(id=uid)
     userSelected = EmployeeUser.objects.get(id=application.applicant_id)
+    matchRating = application.matchRating
     d = {'userSelected':userSelected,
-         'userGrade':userGrade
+         'userGrade':userGrade,
+         'matchRating':matchRating
          }
     return render(request, 'user_profile.html', d)
 

@@ -24,17 +24,39 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label>Line of Service</label>
-            <input type="text" class="form-control" name="los" placeholder="Enter the Line of Service" required />
+            <select name="los" id="los" required>
+                <option value="Tax">Tax</option>
+                <option value="Assurance">Assurance</option>
+                <option value="Consulting">Consulting</option>
+                <option value="Deals">Deals</option>
+            </select>
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label>Location</label>
-            <input type="text" class="form-control" name="location" placeholder="Enter the title of the role" required />
+            <label>Base Office</label>
+            <select name="location" id="location" required>
+                <option value="Leeds">Leeds</option>
+                <option value="Manchester">Manchester</option>
+                <option value="Birmingham">Birmingham</option>
+                <option value="London More London">London More London</option>
+                <option value="London Embarkment">London Embarkment</option>
+            </select>
         </div>
-        <div class="form-group col-md-6">
-            <label>Grade</label>
-            <input type="text" class="form-control" name="grade" placeholder="Enter the grade required" required />
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="grade">Grade</label>
+                <select name="grade" id="grade" required>
+                    <option value="Trainee">Trainee</option>
+                    <option value="Associate">Associate</option>
+                    <option value="Senior Associate">Senior Associate</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Senior Manager">Senior Manager</option>
+                    <option value="Director">Director</option>
+                    <option value="Partner">Partner</option>
+                    <option value="Resourcer">Resourcer</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="form-row">
@@ -61,7 +83,7 @@
             <input type="text" class="form-control" name="skills" placeholder="Salesforce, Microsoft Suite, Excel, etc." required />
         </div>
     </div>
-    <input type="submit" value="Add Role" class="btn btn-primary" style="margin-top:2%;color:white;background-color:darkorange;height:40px;font-size:15px" "     />
+    <input type="submit" value="Add Role" class="btn btn-primary" style="margin-top:2%;color:white;background-color:darkorange;height:40px;font-size:15px" " />
 </form>
 {% include 'footer.html' %}
 
