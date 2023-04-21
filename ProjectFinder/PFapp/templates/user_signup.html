@@ -6,12 +6,21 @@
 
 <script>
     function checkpass() {
-        if (document.signup.password.value != document.signup.cPassword.value) {
-            alert("Passwords do not match!");
-            document.signup.cPassword.focus();
+        if (document.signup.password.value.length > 5) {
+            if (document.signup.password.value != document.signup.cPassword.value) {
+                alert("Passwords do not match!");
+                document.signup.cPassword.focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            alert("Password needs to be at least 6 charachters!");
+            document.signup.password.focus();
             return false;
         }
-        return true;
     }
 </script>
 
@@ -48,7 +57,7 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="grade">Grade</label>
-            <select name="grade" id="grade">
+            <select name="grade" id="grade" required>
                 <option value="Trainee">Trainee</option>
                 <option value="Associate">Associate</option>
                 <option value="Senior Associate">Senior Associate</option>

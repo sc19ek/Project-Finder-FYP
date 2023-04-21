@@ -32,5 +32,6 @@ urlpatterns = [
     path('role_desc/<int:pid>', role_desc, name="role_desc"),
     path('applicants/<int:pid>', applicants, name="applicants"),
     path('user_profile/<int:uid>', user_profile, name="user_profile"),
+    path('edit_profile', edit_profile, name="edit_profile"),
     path('Logout', Logout, name="Logout")
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

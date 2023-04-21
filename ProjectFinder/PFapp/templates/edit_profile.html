@@ -1,0 +1,94 @@
+{% load static %}
+
+{% block body %}
+
+
+{% if userGrade == "manager"%}
+{% include 'manager_navigation.html'%}
+{% elif userGrade == "resourcer" %}
+{% include 'resourcer_navigation.html' %}
+{% else %}
+{% include 'user_navigation.html' %}
+
+{% endif %}
+
+
+
+<form class="container mt-5" name="signup" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h1>{{employee.user.first_name}} {{employee.user.last_name}}</h1>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Base Office</label>
+            <select name="location" id="location">
+                <option value="{{employee.location}}"></option>
+                <option value="Leeds">Leeds</option>
+                <option value="Manchester">Manchester</option>
+                <option value="Birmingham">Birmingham</option>
+                <option value="London More London">London More London</option>
+                <option value="London Embarkment">London Embarkment</option>
+            </select>
+            <h6 style="color:darkorange">Current Location: {{employee.location}}</h6>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="grade">Grade</label>
+            <select name="grade" id="grade" required>
+                <option value="{{employee.grade}}"></option>
+                <option value="Trainee">Trainee</option>
+                <option value="Associate">Associate</option>
+                <option value="Senior Associate">Senior Associate</option>
+                <option value="Manager">Manager</option>
+                <option value="Senior Manager">Senior Manager</option>
+                <option value="Director">Director</option>
+                <option value="Partner">Partner</option>
+                <option value="Resourcer">Resourcer</option>
+            </select>
+            <h6 style="color:darkorange">Current Grade: {{employee.grade}}</h6>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Line of Service</label>
+            <select name="los" id="los" required>
+                <option value="{{employee.los}}"></option>
+                <option value="Tax">Tax</option>
+                <option value="Assurance">Assurance</option>
+                <option value="Consulting">Consulting</option>
+                <option value="Deals">Deals</option>
+            </select>
+            <h6 style="color:darkorange">Current Line of Service: {{employee.los}}</h6>
+
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Skills</label>
+            <input type="text" class="form-control" name="skills" value="{{employee.skills}}" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Languages</label>
+            <input type="text" class="form-control" name="languages" value="{{employee.languages}}" />
+        </div>
+    </div>
+    <input type="submit" value="Update Profile" class="btn btn-primary" style="margin-top:2%;color:white;background-color:darkorange;height:40px;font-size:15px" />
+</form>
+{% include 'footer.html' %}
+
+{% if error == "no" %}
+<script>
+    alert("Profile was updated successfully!");
+    window.location = ("{% url 'edit_profile' %}")
+</script>
+{% elif error == "yes" %}
+<script>
+    alert("Something went wrong try again!");
+</script>
+{% endif %}
+
+{% endblock %}
+

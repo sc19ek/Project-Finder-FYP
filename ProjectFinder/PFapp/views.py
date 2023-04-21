@@ -1,3 +1,4 @@
+from tkinter import FIRST
 from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_protect
 from .models import *
@@ -75,17 +76,26 @@ def loginFunc(request):
 def associate_home(request):
     if not request.user.is_authenticated:
         return redirect('index')
-    return render(request, "associate_home.html")
+    currentUser = request.user
+    employee = EmployeeUser.objects.get(user=currentUser)
+    d = {'employee':employee}
+    return render(request, "associate_home.html", d)
 
 def manager_home(request):
     if not request.user.is_authenticated:
         return redirect('index')
-    return render(request, "manager_home.html")
+    currentUser = request.user
+    employee = EmployeeUser.objects.get(user=currentUser)
+    d = {'employee':employee}
+    return render(request, "manager_home.html",d)
 
 def resourcer_home(request):
     if not request.user.is_authenticated:
         return redirect('index')
-    return render(request, "resourcer_home.html")
+    currentUser = request.user
+    employee = EmployeeUser.objects.get(user=currentUser)
+    d = {'employee':employee}
+    return render(request, "resourcer_home.html",d)
 
 def add_project(request):
     if not request.user.is_authenticated:
@@ -164,7 +174,7 @@ def available_projects(request):
         userGrade = "manager"
     else:
         userGrade="employee"
-    roles = ProjectRole.objects.filter(grade=employee.grade)
+    roles = ProjectRole.objects.filter(grade=employee.grade, los=employee.los)
     d = {'roles':roles,
          'userGrade':userGrade}
     return render(request, "available_projects.html", d)
@@ -212,6 +222,41 @@ def user_profile(request, uid):
          'matchRating':matchRating
          }
     return render(request, 'user_profile.html', d)
+
+def edit_profile(request):
+    error=""
+    user = request.user
+    employee = EmployeeUser.objects.get(user=user)
+    grd = employee.grade
+    if grd in ["Manager", "Senior Manager"]:
+        userGrade = "manager"
+    elif grd in ["Associate", "Senior Associate", "Trainee"]:
+        userGrade = "employee"
+    else:
+        userGrade="resourcer"
+    if request.method=="POST":
+        location = request.POST['location']
+        grade = request.POST['grade']
+        los = request.POST['los']
+        skills = request.POST['skills']
+        languages = request.POST['languages']
+        try:
+            employee.location=location
+            employee.grade=grade
+            employee.los=los
+            employee.skills=skills
+            employee.languages=languages
+
+            employee.save()
+            error="no"
+        except:
+            error="yes"
+
+    d = {'userGrade':userGrade,
+         'employee':employee,
+         'error':error
+         }
+    return render(request, 'edit_profile.html', d)
 
 def Logout(request):
     logout(request)
