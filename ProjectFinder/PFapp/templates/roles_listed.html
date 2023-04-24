@@ -28,7 +28,6 @@
                 <th>End Date</th>
                 <th>Creation Date</th>
 
-                <th>Edit</th>
                 <th>View Applicants</th>
             </tr>
         </thead>
@@ -44,7 +43,6 @@
                 <td>{{i.endDate}}</td>
                 <td>{{i.creationDate}}</td>
 
-                <td><a href="{% url 'index' %}" class="btn btn-success btn-sm">Edit</a></td>
                 <td><a href="{% url 'applicants' i.id %}" class="btn btn-success btn-sm">View Applicants</a></td>
 
             </tr>
