@@ -12,8 +12,10 @@ def index(request):
     return render(request, "index.html")
 
 def user_signup(request):
+    #flags
     error = ""
     grd = ""
+    #stores user details from request post sent from html file to variables
     if request.method=="POST":
         first = request.POST['firstName']
         last = request.POST['lastName']
@@ -25,11 +27,17 @@ def user_signup(request):
         languages = request.POST['languages']
         pwd = request.POST['password']
         try:
+            #cretaes user object
             user_obj = User.objects.create_user(first_name=first, last_name=last, username=email, password=pwd)
+            #creates employee object
             EmployeeUser.objects.create(user=user_obj, location=location, grade=grade, los=los, skills=skills, languages=languages)
+            #no errors
             error = "no"
+            #authenticates user
             user_obj=authenticate(username=email, password=pwd)
+            #logs user in
             login(request,user_obj)
+            #if statement to decide which home page user sees
             if grade in ["Associate", "Senior Associate", "Trainee"]:
                 grd = "employee"
                 redirect('associate_home')
@@ -41,6 +49,7 @@ def user_signup(request):
                 redirect('resourcer_home')
         except:
             error = "yes"
+    #creates dictionary of data to send to html page
     d = {'error': error,
          'grd': grd}
     return render(request, "user_signup.html",d)
@@ -48,9 +57,11 @@ def user_signup(request):
 def loginFunc(request):
     error=""
     grd=""
+    #gets email and password entered 
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
+        #authetnicates user
         user_obj = authenticate(username=email, password=password)
         if user_obj:
             user1 = EmployeeUser.objects.get(user=user_obj)
@@ -76,6 +87,7 @@ def loginFunc(request):
 def associate_home(request):
     if not request.user.is_authenticated:
         return redirect('index')
+    #gets currently logged in users details
     currentUser = request.user
     employee = EmployeeUser.objects.get(user=currentUser)
     d = {'employee':employee}
@@ -119,6 +131,7 @@ def add_project(request):
         desc = request.POST['description']
         skills = request.POST['skills']
         try:
+            #creates project role object using entries sent via post
             ProjectRole.objects.create(requester=requester, projectTitle=pTitle, roleTitle=rTitle, los=los, grade=grd, startDate=sDate, 
                                    endDate=eDate, description=desc, skills=skills, baseOffice=loc, creationDate=date.today())
             error="no"
@@ -140,6 +153,7 @@ def roles_listed(request):
         userGrade = "manager"
     else:
         userGrade = "resourcer"
+    #queries datbase for project roles where the requester is the user logged in
     roles = ProjectRole.objects.filter(requester=userLoggedIn)
     d = {'roles':roles,
          'userGrade': userGrade}
@@ -158,6 +172,7 @@ def applicants(request, pid):
         userGrade = "manager"
     else:
         userGrade = "resourcer"
+    #queries to find applications that have the same project role as the one current user is viewing
     applicants = Applications.objects.filter(role=pRole)
     d = {'role':pRole,
          'userGrade': userGrade,
@@ -174,6 +189,7 @@ def available_projects(request):
         userGrade = "manager"
     else:
         userGrade="employee"
+    #queries database for project roles that have the same employee grade and line of service as currently logged in user
     roles = ProjectRole.objects.filter(grade=employee.grade, los=employee.los)
     d = {'roles':roles,
          'userGrade':userGrade}
@@ -185,8 +201,10 @@ def role_desc(request, pid):
     user = request.user
     employee = EmployeeUser.objects.get(user=user)
     grd = employee.grade
+    #splits skills fields into lists where there are commas
     roleSkills = list(pRole.skills.split(","))
     userSkills = list(employee.skills.split(","))
+    #calculates the percentage of user skills present in role skills
     matchRating = (len(set(roleSkills).intersection(set(userSkills))))/len(roleSkills)*100
     if grd in ["Manager", "Senior Manager"]:
         userGrade = "manager"
@@ -195,6 +213,7 @@ def role_desc(request, pid):
 
     if request.method=="POST":
         try:
+            #creates application object when the user applies
             Applications.objects.create(role=pRole, applicant=employee, applicationDate=date.today(), matchRating=matchRating)
             error="no"
         except:
@@ -213,8 +232,9 @@ def user_profile(request, uid):
         userGrade = "manager"
     else:
         userGrade="resourcer"
-
+    #queries for selected application
     application = Applications.objects.get(id=uid)
+    #queries for selected uer
     userSelected = EmployeeUser.objects.get(id=application.applicant_id)
     matchRating = application.matchRating
     d = {'userSelected':userSelected,
@@ -241,6 +261,7 @@ def edit_profile(request):
         skills = request.POST['skills']
         languages = request.POST['languages']
         try:
+            #tries to update fields given the variables storing the input from the user
             employee.location=location
             employee.grade=grade
             employee.los=los
@@ -259,5 +280,6 @@ def edit_profile(request):
     return render(request, 'edit_profile.html', d)
 
 def Logout(request):
+    #logs out user
     logout(request)
     return redirect("index")
